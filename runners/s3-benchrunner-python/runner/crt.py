@@ -6,12 +6,17 @@ from concurrent.futures import as_completed
 import re
 from threading import Event, Semaphore
 from typing import Optional, Tuple
-
+import  datetime, time
 from runner import BenchmarkConfig, BenchmarkRunner
+import pandas as pd
 
+dic = {}
 
 class CrtBenchmarkRunner(BenchmarkRunner):
     """Benchmark runner using aws-crt-python's S3Client"""
+
+
+
 
     def __init__(self, config: BenchmarkConfig):
         super().__init__(config)
@@ -68,9 +73,10 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         except ModuleNotFoundError:
             # resource module not available on Windows
             pass
-
+        max_concurrency = 100
         self._verbose(f'max_concurrency: {max_concurrency}')
         self._concurrency_semaphore = Semaphore(max_concurrency)
+        print("# of Threads: ", max_concurrency)
 
         # if any request fails, it sets this event
         # so we know to stop scheduling new requests
@@ -82,7 +88,10 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         requests = []
         for i in range(len(self.config.tasks)):
             self._concurrency_semaphore.acquire()
-
+            start_time = time.time() 
+            global dic
+            #dic[self.config.tasks[i].key]=[start_time]
+            dic[self.config.tasks[i].key]= start_time
             # stop kicking off new tasks if one has failed
             if self._failed_event.is_set():
                 break
@@ -93,6 +102,22 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         request_futures = [r.finished_future for r in requests]
         for finished_future in as_completed(request_futures):
             finished_future.result()
+    
+        df = pd.DataFrame(dic.items(), columns = ['key','lat'])
+        df['lat'] = df['lat']*1000
+        print("min latency", df['lat'].min())
+        print("ave latency", df['lat'].mean())
+        print("max latency", df['lat'].max())
+        now = datetime.datetime.now()
+        fname = "/root/latency_results_" + str(now.time())
+        df.to_csv(fname, sep=',')
+        fname = "/root/latency_results_" + str(now.time()) +'_summary'
+        fd = open(fname, "w")
+        #fd.write("File: %s , thread: %s\n" % (task[i].key, max_concurrency))
+        fd.write("min latency: %s\n" % (df['lat'].min()) )
+        fd.write("ave latency: %s\n" % (df['lat'].mean()) )
+        fd.write("max latency: %s\n" % (df['lat'].max()) )
+        fd.close()
 
     def _make_request(self, task_i) -> awscrt.s3.S3Request:
         task = self.config.tasks[task_i]
@@ -138,6 +163,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
                 checksum_config = awscrt.s3.S3ChecksumConfig(
                     validate_response=True)
 
+
         # completion callback sets the future as complete,
         # or exits the program on error
         def on_done(error: Optional[BaseException],
@@ -157,7 +183,10 @@ class CrtBenchmarkRunner(BenchmarkRunner):
                         print(f'{header[0]}: {header[1]}')
                 if error_body is not None:
                     print(error_body)
-
+           
+            end_time = time.time() 
+            global dic
+            dic[task.key] = end_time - dic[task.key] 
             self._concurrency_semaphore.release()
 
         return self._s3_client.make_request(
