@@ -1,0 +1,61 @@
+{
+    "version": 2,
+    "comment": "",
+    "filesOnDisk": true,
+    "checksum": null,
+    "maxRepeatCount": 1,
+    "maxRepeatSecs": 600,
+    "tasks": [
+        {
+            "action": "download",
+            "key": "download/512KiB-10x/0001",
+            "size": 524288
+        },
+        {
+            "action": "download",
+            "key": "download/512KiB-10x/0002",
+            "size": 524288
+        },
+        {
+            "action": "download",
+            "key": "download/512KiB-10x/0003",
+            "size": 524288
+        },
+        {
+            "action": "download",
+            "key": "download/512KiB-10x/0004",
+            "size": 524288
+        },
+        {
+            "action": "download",
+            "key": "download/512KiB-10x/0005",
+            "size": 524288
+        },
+        {
+            "action": "download",
+            "key": "download/512KiB-10x/0006",
+            "size": 524288
+        },
+        {
+            "action": "download",
+            "key": "download/512KiB-10x/0007",
+            "size": 524288
+        },
+        {
+            "action": "download",
+            "key": "download/512KiB-10x/0008",
+            "size": 524288
+        },
+        {
+            "action": "download",
+            "key": "download/512KiB-10x/0009",
+            "size": 524288
+        },
+        {
+            "action": "download",
+            "key": "download/512KiB-10x/0010",
+            "size": 524288
+        }
+	
+    ]
+ }
