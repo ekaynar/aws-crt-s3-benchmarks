@@ -33,7 +33,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
             self.endpoint = \
                 f"{self.config.bucket}.s3.{self.config.region}.amazonaws.com"
 
-        elg = awscrt.io.EventLoopGroup()
+        elg = awscrt.io.EventLoopGroup(5)
         resolver = awscrt.io.DefaultHostResolver(elg)
         bootstrap = awscrt.io.ClientBootstrap(elg, resolver)
         credential_provider = awscrt.auth.AwsCredentialsProvider.new_default_chain(
@@ -73,7 +73,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         except ModuleNotFoundError:
             # resource module not available on Windows
             pass
-        max_concurrency = 100
+        #max_concurrency = 100
         self._verbose(f'max_concurrency: {max_concurrency}')
         self._concurrency_semaphore = Semaphore(max_concurrency)
         print("# of Threads: ", max_concurrency)
@@ -88,10 +88,6 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         requests = []
         for i in range(len(self.config.tasks)):
             self._concurrency_semaphore.acquire()
-            start_time = time.time() 
-            global dic
-            #dic[self.config.tasks[i].key]=[start_time]
-            dic[self.config.tasks[i].key]= start_time
             # stop kicking off new tasks if one has failed
             if self._failed_event.is_set():
                 break
@@ -104,6 +100,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
             finished_future.result()
     
         df = pd.DataFrame(dic.items(), columns = ['key','lat'])
+        print(df)
         df['lat'] = df['lat']*1000
         print("min latency", df['lat'].min())
         print("ave latency", df['lat'].mean())
@@ -121,6 +118,11 @@ class CrtBenchmarkRunner(BenchmarkRunner):
 
     def _make_request(self, task_i) -> awscrt.s3.S3Request:
         task = self.config.tasks[task_i]
+        
+        start_time = time.time() 
+        global dic
+        dic[task.key]= start_time
+        print(task.key, start_time)
 
         headers = awscrt.http.HttpHeaders()
         headers.add('Host', self.endpoint)
@@ -185,9 +187,10 @@ class CrtBenchmarkRunner(BenchmarkRunner):
                     print(error_body)
            
             end_time = time.time() 
-            global dic
-            dic[task.key] = end_time - dic[task.key] 
             self._concurrency_semaphore.release()
+            global dic
+            dic[task.key] = end_time - dic[task.key]
+            print(task.key, end_time, dic[task.key])
 
         return self._s3_client.make_request(
             type=s3type,

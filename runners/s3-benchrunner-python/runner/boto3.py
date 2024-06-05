@@ -1,7 +1,12 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import sys
 
+import  datetime, time
+
 from runner import BenchmarkConfig, BenchmarkRunner
+
+import pandas as pd
+dic = {}
 
 
 class Boto3BenchmarkRunner(BenchmarkRunner):
@@ -19,8 +24,6 @@ class Boto3BenchmarkRunner(BenchmarkRunner):
 
             # when CRT is installed from source, its version is "1.0.0.dev0"
             # but boto3 expects it to be like "<int>.<int>.<int>"
-            awscrt.__version__ = awscrt.__version__.removesuffix('.dev0')
-
             # patch function that boto3 calls to see if it should use CRT
             def patched_is_optimized_for_system():
                 return use_crt
@@ -85,8 +88,19 @@ class Boto3BenchmarkRunner(BenchmarkRunner):
         self._verbose(
             f'  {attr_name}: {getattr(self._transfer_config, attr_name)}')
 
+    def on_done(self, task):
+        end_time = time.time()
+        global dic
+        dic[task] = end_time - dic[task]
+        print(task, end_time, dic[task])
+
     def _make_request(self, task_i: int):
         task = self.config.tasks[task_i]
+
+        start_time = time.time()
+        global dic
+        dic[task.key]= start_time
+        print(task.key, start_time)
 
         call_name = None
         call_kwargs = {
@@ -94,6 +108,7 @@ class Boto3BenchmarkRunner(BenchmarkRunner):
             'Key': task.key,
             'ExtraArgs': {},
             'Config': self._transfer_config,
+            'Callback' : self.on_done(task.key),
         }
 
         if task.action == 'upload':
@@ -154,6 +169,24 @@ class Boto3BenchmarkRunner(BenchmarkRunner):
                     executor.shutdown(cancel_futures=True)
 
                     raise e
+
+        df = pd.DataFrame(dic.items(), columns = ['key','lat'])
+        print(df)
+        df['lat'] = df['lat']*1000
+        print("min latency", df['lat'].min())
+        print("ave latency", df['lat'].mean())
+        print("max latency", df['lat'].max())
+        now = datetime.datetime.now()
+        fname = "/root/latency_results_" + str(now.time())
+        df.to_csv(fname, sep=',')
+        fname = "/root/latency_results_" + str(now.time()) +'_summary'
+        fd = open(fname, "w")
+        #fd.write("File: %s , thread: %s\n" % (task[i].key, max_concurrency))
+        fd.write("min latency: %s\n" % (df['lat'].min()) )
+        fd.write("ave latency: %s\n" % (df['lat'].mean()) )
+        fd.write("max latency: %s\n" % (df['lat'].max()) )
+        fd.close()
+
 
 
 class Boto3DownloadFileObj:
