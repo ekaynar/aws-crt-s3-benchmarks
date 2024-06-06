@@ -9,47 +9,8 @@ from typing import Optional, Tuple
 import  datetime, time
 from runner import BenchmarkConfig, BenchmarkRunner
 import pandas as pd
-import threading
 
 dic = {}
-
-GBPS = 1024 * 1024 * 1024
-class Statistics(object):
-
-    def __init__(self):
-        self._lock = threading.Lock()
-        self.end_time = 0
-        self._bytes_peak = 0
-        self._bytes_avg = 0
-        self._bytes_read = 0
-        self._bytes_sampled = 0
-        self.sec_first_byte = 0
-        self.star_time = time.time()
-        self.last_sample_time = time.time()
-
-    def record_read(self, size):
-        with self._lock:
-            self._bytes_read += size
-            if self.sec_first_byte == 0:
-                self.sec_first_byte = time.time() - self.star_time
-                print("1st byte", self.sec_first_byte)
-            time_now = time.time()
-            if time_now - self.last_sample_time > 1:
-                bytes_this_second = (self._bytes_read - self._bytes_sampled) / (time_now - self.last_sample_time)
-                self._bytes_sampled = self._bytes_read
-                self._bytes_avg = (self._bytes_avg + bytes_this_second) * 0.5
-                if self._bytes_peak < bytes_this_second:
-                    self._bytes_peak = bytes_this_second
-                self.last_sample_time = time_now
-        
-
-    def bytes_peak(self):
-        return (self._bytes_peak * 8) / GBPS
-
-    def bytes_avg(self):
-        return (self._bytes_avg * 8) / GBPS
-
-
 
 class CrtBenchmarkRunner(BenchmarkRunner):
     """Benchmark runner using aws-crt-python's S3Client"""
@@ -90,7 +51,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
             bootstrap=bootstrap,
             region=self.config.region,
             signing_config=signing_config,
-            enable_s3express=is_s3express, 
+            enable_s3express=is_s3express,
             throughput_target_gbps=self.config.target_throughput_Gbps)
 
         # Cap the number of meta-requests we'll work on simultaneously,
@@ -157,7 +118,6 @@ class CrtBenchmarkRunner(BenchmarkRunner):
 
     def _make_request(self, task_i) -> awscrt.s3.S3Request:
         task = self.config.tasks[task_i]
-        task.t_statistic = Statistics() 
         
         start_time = time.time() 
         global dic
@@ -205,11 +165,6 @@ class CrtBenchmarkRunner(BenchmarkRunner):
                 checksum_config = awscrt.s3.S3ChecksumConfig(
                     validate_response=True)
 
-        def on_body(chunk, **kwargs):
-            print("obody", task.key, chunk)
-            task.t_statistic.record_read(chunk)
-
-        
 
         # completion callback sets the future as complete,
         # or exits the program on error
@@ -235,7 +190,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
             self._concurrency_semaphore.release()
             global dic
             dic[task.key] = end_time - dic[task.key]
-            print(task.key, end_time, dic[task.key])
+            #print(task.key, end_time, dic[task.key])
 
         return self._s3_client.make_request(
             type=s3type,
@@ -244,5 +199,4 @@ class CrtBenchmarkRunner(BenchmarkRunner):
             recv_filepath=recv_filepath,
             send_filepath=send_filepath,
             checksum_config=checksum_config,
-        #    on_progress=on_body,
             on_done=on_done)
