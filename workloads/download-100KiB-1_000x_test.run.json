@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "comment": "",
+    "filesOnDisk": true,
+    "checksum": null,
+    "maxRepeatCount": 1,
+    "maxRepeatSecs":600 ,
+    "tasks": [
+        {
+            "action": "download",
+            "key": "download/100KiB-1_000x/0001",
+            "size": 102400
+        },
+        {
+            "action": "download",
+            "key": "download/100KiB-1_000x/0002",
+            "size": 102400
+        },
+        {
+            "action": "download",
+            "key": "download/100KiB-1_000x/0003",
+            "size": 102400
+        },
+        {
+            "action": "download",
+            "key": "download/100KiB-1_000x/0004",
+            "size": 102400
+        }
+    ]
+}

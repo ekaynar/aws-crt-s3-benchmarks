@@ -12,27 +12,44 @@ import pandas as pd
 import threading
 
 dic = {}
+completed_connections = 0
 
 GBPS = 1024 * 1024 * 1024
+
+class PerObjStat(object):
+
+    def __init__(self):
+        self.start_time = time.time()
+        self.latency = 0
+        
+    def record_latency(self):
+        self.latency = time.time() - self.start_time
+
+
 class Statistics(object):
 
     def __init__(self):
         self._lock = threading.Lock()
-        self.end_time = 0
+        self.latency = 0
+        self.req_count = 0
+        self.avg_latency = 0
+      
+        '''
         self._bytes_peak = 0
         self._bytes_avg = 0
         self._bytes_read = 0
         self._bytes_sampled = 0
         self.sec_first_byte = 0
-        self.star_time = time.time()
+        self.start_time = time.time()
         self.last_sample_time = time.time()
+        
 
     def record_read(self, size):
         with self._lock:
             self._bytes_read += size
             if self.sec_first_byte == 0:
-                self.sec_first_byte = time.time() - self.star_time
-                print("1st byte", self.sec_first_byte)
+                self.sec_first_byte = time.time() - self.start_time
+               #print("1st byte", self.sec_first_byte)
             time_now = time.time()
             if time_now - self.last_sample_time > 1:
                 bytes_this_second = (self._bytes_read - self._bytes_sampled) / (time_now - self.last_sample_time)
@@ -41,15 +58,21 @@ class Statistics(object):
                 if self._bytes_peak < bytes_this_second:
                     self._bytes_peak = bytes_this_second
                 self.last_sample_time = time_now
-        
+        '''
+    def calculate_latency(self, latency):
+        with self._lock:
+            self.latency += latency
+            self.req_count += 1
+            self.avg_latency =  self.latency / self.req_count
 
-    def bytes_peak(self):
-        return (self._bytes_peak * 8) / GBPS
+#    def bytes_peak(self):
+#        return (self._bytes_peak * 8) / GBPS
 
-    def bytes_avg(self):
-        return (self._bytes_avg * 8) / GBPS
+#    def bytes_avg(self):
+#        return (self._bytes_avg * 8) / GBPS
 
 
+all_stats = Statistics()
 
 class CrtBenchmarkRunner(BenchmarkRunner):
     """Benchmark runner using aws-crt-python's S3Client"""
@@ -121,9 +144,11 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         # so we know to stop scheduling new requests
         self._failed_event = Event()
 
+    
     def run(self):
         # kick off all tasks
         # respect concurrency semaphore so we don't have too many running at once
+
         requests = []
         for i in range(len(self.config.tasks)):
             self._concurrency_semaphore.acquire()
@@ -144,6 +169,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         print("min latency", df['lat'].min())
         print("ave latency", df['lat'].mean())
         print("max latency", df['lat'].max())
+        print("ave latency2:",  all_stats.avg_latency )
         now = datetime.datetime.now()
         fname = "/root/latency_results_" + str(now.time())
         df.to_csv(fname, sep=',')
@@ -157,11 +183,11 @@ class CrtBenchmarkRunner(BenchmarkRunner):
 
     def _make_request(self, task_i) -> awscrt.s3.S3Request:
         task = self.config.tasks[task_i]
-        task.t_statistic = Statistics() 
+        task.stats = PerObjStat() 
         
-        start_time = time.time() 
-        global dic
-        dic[task.key]= start_time
+        #start_time = time.time() 
+        #global dic
+        #dic[task.key]= task.stats.start_time
         #print(task.key, start_time)
 
         headers = awscrt.http.HttpHeaders()
@@ -205,9 +231,8 @@ class CrtBenchmarkRunner(BenchmarkRunner):
                 checksum_config = awscrt.s3.S3ChecksumConfig(
                     validate_response=True)
 
-        def on_body(chunk, **kwargs):
-            print("obody", task.key, chunk)
-            task.t_statistic.record_read(chunk)
+        #def on_body(chunk, **kwargs):
+         #   task.t_statistic.record_read(chunk)
 
         
 
@@ -231,11 +256,16 @@ class CrtBenchmarkRunner(BenchmarkRunner):
                 if error_body is not None:
                     print(error_body)
            
-            end_time = time.time() 
+            global completed_connections
+            completed_connections += 1
+            task.stats.record_latency()
+            #end_time = time.time() 
             self._concurrency_semaphore.release()
             global dic
-            dic[task.key] = end_time - dic[task.key]
-            print(task.key, end_time, dic[task.key])
+            dic[task.key] = task.stats.latency
+            all_stats.calculate_latency(task.stats.latency) 
+            #dic[task.key] = end_time - dic[task.key]
+            #print(task.key, end_time, dic[task.key], task.t_statistic.latency)
 
         return self._s3_client.make_request(
             type=s3type,
