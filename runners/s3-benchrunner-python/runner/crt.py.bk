@@ -25,6 +25,7 @@ class PerObjStat(object):
     def record_latency(self):
         self.latency = time.time() - self.start_time
 
+
 class Statistics(object):
 
     def __init__(self):
@@ -134,7 +135,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         except ModuleNotFoundError:
             # resource module not available on Windows
             pass
-        max_concurrency = 100
+        max_concurrency = 5
         self._verbose(f'max_concurrency: {max_concurrency}')
         self._concurrency_semaphore = Semaphore(max_concurrency)
         #print("# of Threads: ", max_concurrency)
@@ -154,7 +155,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
             # stop kicking off new tasks if one has failed
             if self._failed_event.is_set():
                 break
-            #print("send req", self.config.tasks[i].key) 
+            print("send req", self.config.tasks[i].key) 
             requests.append(self._make_request(i))
 
         # wait until all tasks are done
@@ -182,7 +183,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
 
     def _make_request(self, task_i) -> awscrt.s3.S3Request:
         task = self.config.tasks[task_i]
-#        task.stats = PerObjStat() 
+        task.stats = PerObjStat() 
         
         #start_time = time.time() 
         #global dic
@@ -230,6 +231,10 @@ class CrtBenchmarkRunner(BenchmarkRunner):
                 checksum_config = awscrt.s3.S3ChecksumConfig(
                     validate_response=True)
 
+        #def on_body(chunk, **kwargs):
+         #   task.t_statistic.record_read(chunk)
+
+        
 
         # completion callback sets the future as complete,
         # or exits the program on error
@@ -251,18 +256,19 @@ class CrtBenchmarkRunner(BenchmarkRunner):
                 if error_body is not None:
                     print(error_body)
           
-            #time.sleep(0)
+            print("done", task.key)
+            time.sleep(1)
             global completed_connections
             completed_connections += 1
             task.stats.record_latency()
-            #print("done", task.key, task.stats.latency)
             #end_time = time.time() 
             self._concurrency_semaphore.release()
             global dic
             dic[task.key] = task.stats.latency
             all_stats.calculate_latency(task.stats.latency) 
+            #dic[task.key] = end_time - dic[task.key]
+            #print(task.key, end_time, dic[task.key], task.t_statistic.latency)
 
-        task.stats = PerObjStat()
         return self._s3_client.make_request(
             type=s3type,
             request=awscrt.http.HttpRequest(
@@ -270,4 +276,5 @@ class CrtBenchmarkRunner(BenchmarkRunner):
             recv_filepath=recv_filepath,
             send_filepath=send_filepath,
             checksum_config=checksum_config,
+        #    on_progress=on_body,
             on_done=on_done)
