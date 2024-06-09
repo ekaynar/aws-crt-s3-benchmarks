@@ -121,7 +121,6 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         max_concurrency = 10_000
         global max_con
         max_con = max_concurrency
-        print("max_concurrency", max_concurrency)
         try:
             from resource import RLIMIT_NOFILE, getrlimit
             current_file_limit, hard_limit = getrlimit(RLIMIT_NOFILE)
@@ -137,8 +136,9 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         except ModuleNotFoundError:
             # resource module not available on Windows
             pass
-        max_concurrency = 100
+        max_concurrency = 10
         self._verbose(f'max_concurrency: {max_concurrency}')
+        print("max_concurrency", max_concurrency)
         self._concurrency_semaphore = Semaphore(max_concurrency)
         #print("# of Threads: ", max_concurrency)
 
@@ -173,9 +173,9 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         print("max latency", df['lat'].max())
         print("ave latency2:",  all_stats.avg_latency )
         now = datetime.datetime.now()
-        fname = "/root/latency_results_" + str(now.time())
+        fname = "~/latency_results_" + str(now.time())
         df.to_csv(fname, sep=',')
-        fname = "/root/latency_results_" + str(now.time()) +'_summary'
+        fname = "~/latency_results_" + str(now.time()) +'_summary'
         fd = open(fname, "w")
         #fd.write("File: %s , thread: %s\n" % (task[i].key, max_concurrency))
         global max_con
