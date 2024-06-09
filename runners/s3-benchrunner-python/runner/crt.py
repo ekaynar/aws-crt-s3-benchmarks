@@ -173,9 +173,9 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         print("max latency", df['lat'].max())
         print("ave latency2:",  all_stats.avg_latency )
         now = datetime.datetime.now()
-        fname = "~/latency_results_" + str(now.time())
+        fname = "latency_results_" + str(now.time())
         df.to_csv(fname, sep=',')
-        fname = "~/latency_results_" + str(now.time()) +'_summary'
+        fname = "latency_results_" + str(now.time()) +'_summary'
         fd = open(fname, "w")
         #fd.write("File: %s , thread: %s\n" % (task[i].key, max_concurrency))
         global max_con
