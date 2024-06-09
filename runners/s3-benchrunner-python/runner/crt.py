@@ -13,7 +13,7 @@ import threading
 
 dic = {}
 completed_connections = 0
-
+max_con = 0
 GBPS = 1024 * 1024 * 1024
 
 class PerObjStat(object):
@@ -119,6 +119,9 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         # so the application doesn't exceed its file-descriptor limits
         # when a workload has tons of files.
         max_concurrency = 10_000
+        global max_con
+        max_con = max_concurrency
+        print("max_concurrency", max_concurrency)
         try:
             from resource import RLIMIT_NOFILE, getrlimit
             current_file_limit, hard_limit = getrlimit(RLIMIT_NOFILE)
@@ -165,7 +168,6 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         df = pd.DataFrame(dic.items(), columns = ['key','lat'])
         #print(df)
         df['lat'] = df['lat']*1000
-        print("max_concurrency", max_concurrency )
         print("min latency", df['lat'].min())
         print("ave latency", df['lat'].mean())
         print("max latency", df['lat'].max())
@@ -176,7 +178,9 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         fname = "/root/latency_results_" + str(now.time()) +'_summary'
         fd = open(fname, "w")
         #fd.write("File: %s , thread: %s\n" % (task[i].key, max_concurrency))
-        fd.write("max_concurrency: %s\n" % max_concurrency) )
+        global max_con
+        a = max_con
+        fd.write("max_concurrency: %s\n" % a )
         fd.write("min latency: %s\n" % (df['lat'].min()) )
         fd.write("ave latency: %s\n" % (df['lat'].mean()) )
         fd.write("max latency: %s\n" % (df['lat'].max()) )

@@ -60,6 +60,7 @@ def build_workload(src_file: Path):
     action: str = src_json['action']
     file_size_str: str = src_json['fileSize']
     file_size: int = size_from_str(file_size_str)
+    add_dir: str = src_json["add_dir"]
 
     # optional fields
     comment: str = src_json.get('comment', "")
@@ -86,6 +87,7 @@ def build_workload(src_file: Path):
 
     dirname = f'{file_size_str}'
     dirname += f'-{num_files:_}x'
+    dirname += f'_{add_dir}'
 
     if checksum:
         dirname += f'-{checksum.lower()}'
