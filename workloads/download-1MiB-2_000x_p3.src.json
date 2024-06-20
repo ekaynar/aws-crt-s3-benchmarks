@@ -1,0 +1,9 @@
+{
+    "action": "download",
+    "fileSize": "1MiB",
+    "numFiles": 2000,
+    "add_dir": "p3",
+    "filesOnDisk": false , 
+    "maxRepeatCount": 1
+
+}

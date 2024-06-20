@@ -1,0 +1,9 @@
+{
+    "action": "download",
+    "fileSize": "512KiB",
+    "numFiles": 30000,
+    "add_dir": "p5",
+    "filesOnDisk": false , 
+    "maxRepeatCount": 1
+
+}
