@@ -1,0 +1,9 @@
+{
+    "action": "upload",
+    "fileSize": "10KiB",
+    "add_dir": "u1",
+    "numFiles": 10000, 
+    "maxRepeatCount": 1
+
+}
+

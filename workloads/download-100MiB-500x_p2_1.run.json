@@ -1,0 +1,508 @@
+{
+    "version": 2,
+    "comment": "",
+    "filesOnDisk": false,
+    "checksum": null,
+    "maxRepeatCount": 1,
+    "maxRepeatSecs": 600,
+    "tasks": [
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/001",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/002",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/003",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/004",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/005",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/006",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/007",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/008",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/009",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/010",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/011",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/012",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/013",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/014",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/015",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/016",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/017",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/018",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/019",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/020",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/021",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/022",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/023",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/024",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/025",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/026",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/027",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/028",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/029",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/030",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/031",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/032",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/033",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/034",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/035",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/036",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/037",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/038",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/039",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/040",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/041",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/042",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/043",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/044",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/045",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/046",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/047",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/048",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/049",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/050",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/051",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/052",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/053",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/054",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/055",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/056",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/057",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/058",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/059",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/060",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/061",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/062",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/063",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/064",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/065",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/066",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/067",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/068",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/069",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/070",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/071",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/072",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/073",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/074",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/075",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/076",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/077",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/078",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/079",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/080",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/081",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/082",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/083",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/084",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/085",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/086",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/087",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/088",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/089",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/090",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/091",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/092",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/093",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/094",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/095",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/096",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/097",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p2/098",
+            "size": 104857600
+        },
+        {
+            "action": "download",
+            "key": "download/100MiB-500x_p1/100",
+            "size": 104857600
+        }
+    ]
+}
+
+
+

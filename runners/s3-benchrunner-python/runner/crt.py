@@ -136,7 +136,7 @@ class CrtBenchmarkRunner(BenchmarkRunner):
         except ModuleNotFoundError:
             # resource module not available on Windows
             pass
-        max_concurrency = 10
+        max_concurrency = 40
         self._verbose(f'max_concurrency: {max_concurrency}')
         print("max_concurrency", max_concurrency)
         self._concurrency_semaphore = Semaphore(max_concurrency)
